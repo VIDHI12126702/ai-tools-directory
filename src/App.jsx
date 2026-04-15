@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useMemo, useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import StatsSection from "./components/StatsSection";
@@ -13,7 +14,6 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import AdUnit from "./components/AdUnit";
 import { tools } from "./data/tools";
-import { useMemo, useState } from "react";
 
 function HomePage({
   tools,
@@ -50,7 +50,7 @@ function HomePage({
             <h2>Sponsored</h2>
             <p>Advertisement</p>
           </div>
-          <AdUnit slot="1234567890" className="top-ad" />
+          <AdUnit slot="7756009190" className="top-ad" />
         </section>
 
         <SearchFilter
@@ -96,13 +96,19 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTool, setSelectedTool] = useState(null);
 
-  const categories = ["All", ...new Set(tools.map((t) => t.category))];
+  const categories = useMemo(() => {
+    return ["All", ...new Set(tools.map((t) => t.category))];
+  }, []);
 
-  const trendingTools = tools.filter((t) => t.trending);
+  const trendingTools = useMemo(() => {
+    return tools.filter((t) => t.trending);
+  }, []);
 
-  const featuredTools = tools.filter((t) =>
-    ["ChatGPT", "Midjourney", "Runway"].includes(t.name)
-  );
+  const featuredTools = useMemo(() => {
+    return tools.filter((t) =>
+      ["ChatGPT", "Midjourney", "Runway"].includes(t.name)
+    );
+  }, []);
 
   const filteredTools = useMemo(() => {
     const search = searchTerm.toLowerCase().trim();
