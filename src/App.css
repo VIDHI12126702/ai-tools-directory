@@ -697,3 +697,10 @@ button {
     min-height: 100px;
   }
 }
+
+.hero-desc {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #4b5563;
+  line-height: 1.6;
+}
