@@ -5,11 +5,13 @@ function Footer() {
     <footer className="footer" id="footer">
       <div className="container footer-content">
         <h3>AI Tools Hub</h3>
+
         <p>
           A simple directory to discover useful AI tools for work, creativity,
           and productivity.
         </p>
 
+        {/* ✅ ADD THIS SECTION */}
         <div className="footer-links">
           <Link to="/privacy-policy">Privacy Policy</Link>
           <Link to="/about">About</Link>
