@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import StatsSection from "./components/StatsSection";
@@ -9,53 +9,31 @@ import ToolsGrid from "./components/ToolsGrid";
 import ToolModal from "./components/ToolModal";
 import AdBanner from "./components/AdBanner";
 import Footer from "./components/Footer";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import { tools } from "./data/tools";
+import { useMemo, useState } from "react";
 
-function App() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedTool, setSelectedTool] = useState(null);
-
-  const categories = useMemo(() => {
-    return ["All", ...new Set(tools.map((tool) => tool.category))];
-  }, []);
-
-  const trendingTools = useMemo(() => {
-    return tools.filter((tool) => tool.trending);
-  }, []);
-
-  const featuredTools = useMemo(() => {
-    return tools.filter((tool) =>
-      ["ChatGPT", "Midjourney", "Runway"].includes(tool.name)
-    );
-  }, []);
-
-  const filteredTools = useMemo(() => {
-    const searchText = searchTerm.trim().toLowerCase();
-
-    return tools.filter((tool) => {
-      const matchesCategory =
-        selectedCategory === "All" || tool.category === selectedCategory;
-
-      const matchesSearch =
-        searchText === "" ||
-        tool.name.toLowerCase().includes(searchText) ||
-        tool.description.toLowerCase().includes(searchText) ||
-        tool.category.toLowerCase().includes(searchText) ||
-        tool.pricing.toLowerCase().includes(searchText);
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [searchTerm, selectedCategory]);
-
+function HomePage({
+  tools,
+  categories,
+  trendingTools,
+  featuredTools,
+  filteredTools,
+  searchTerm,
+  setSearchTerm,
+  selectedCategory,
+  setSelectedCategory,
+  setSelectedTool
+}) {
   const handleResetFilters = () => {
     setSearchTerm("");
     setSelectedCategory("All");
   };
 
   return (
-    <div className="app">
-      <Navbar />
+    <>
       <Hero />
 
       <StatsSection
@@ -67,7 +45,7 @@ function App() {
       <div className="container">
         <FeaturedSection tools={featuredTools} onOpenTool={setSelectedTool} />
 
-        <AdBanner text="Ad Space — Top Banner (Google Ads later)" />
+        <AdBanner text="Ad Space — Top Banner" />
 
         <SearchFilter
           searchTerm={searchTerm}
@@ -80,7 +58,7 @@ function App() {
 
         <TrendingTools tools={trendingTools} onOpenTool={setSelectedTool} />
 
-        <AdBanner text="Ad Space — Middle Banner / Affiliate Promotion" />
+        <AdBanner text="Ad Space — Middle Banner" />
 
         <ToolsGrid
           tools={filteredTools}
@@ -89,11 +67,70 @@ function App() {
           searchTerm={searchTerm}
         />
       </div>
+    </>
+  );
+}
+
+function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedTool, setSelectedTool] = useState(null);
+
+  const categories = ["All", ...new Set(tools.map((t) => t.category))];
+
+  const trendingTools = tools.filter((t) => t.trending);
+
+  const featuredTools = tools.filter((t) =>
+    ["ChatGPT", "Midjourney", "Runway"].includes(t.name)
+  );
+
+  const filteredTools = useMemo(() => {
+    const search = searchTerm.toLowerCase();
+
+    return tools.filter((t) => {
+      const matchCategory =
+        selectedCategory === "All" || t.category === selectedCategory;
+
+      const matchSearch =
+        t.name.toLowerCase().includes(search) ||
+        t.description.toLowerCase().includes(search);
+
+      return matchCategory && matchSearch;
+    });
+  }, [searchTerm, selectedCategory]);
+
+  return (
+    <>
+      <Navbar />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              tools={tools}
+              categories={categories}
+              trendingTools={trendingTools}
+              featuredTools={featuredTools}
+              filteredTools={filteredTools}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              setSelectedTool={setSelectedTool}
+            />
+          }
+        />
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
 
       <Footer />
 
       <ToolModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
-    </div>
+    </>
   );
 }
 

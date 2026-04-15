@@ -650,3 +650,23 @@ button {
     align-items: flex-start;
   }
 }
+
+.page {
+  padding: 40px 0;
+}
+
+.page h1 {
+  margin-bottom: 20px;
+}
+
+.footer-links {
+  margin: 15px 0;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: #60a5fa;
+  font-weight: 600;
+}
