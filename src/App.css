@@ -670,3 +670,30 @@ button {
   color: #60a5fa;
   font-weight: 600;
 }
+
+.ad-unit-wrapper {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 120px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.top-ad,
+.middle-ad,
+.bottom-ad {
+  margin-top: 10px;
+}
+
+.adsbygoogle {
+  width: 100%;
+  min-height: 90px;
+}
+
+@media (max-width: 768px) {
+  .ad-unit-wrapper {
+    padding: 14px;
+    min-height: 100px;
+  }
+}

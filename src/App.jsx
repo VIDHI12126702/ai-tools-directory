@@ -7,11 +7,11 @@ import SearchFilter from "./components/SearchFilter";
 import TrendingTools from "./components/TrendingTools";
 import ToolsGrid from "./components/ToolsGrid";
 import ToolModal from "./components/ToolModal";
-import AdBanner from "./components/AdBanner";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import AdUnit from "./components/AdUnit";
 import { tools } from "./data/tools";
 import { useMemo, useState } from "react";
 
@@ -45,7 +45,13 @@ function HomePage({
       <div className="container">
         <FeaturedSection tools={featuredTools} onOpenTool={setSelectedTool} />
 
-        <AdBanner text="Ad Space — Top Banner" />
+        <section className="section">
+          <div className="section-header">
+            <h2>Sponsored</h2>
+            <p>Advertisement</p>
+          </div>
+          <AdUnit slot="1234567890" className="top-ad" />
+        </section>
 
         <SearchFilter
           searchTerm={searchTerm}
@@ -58,7 +64,13 @@ function HomePage({
 
         <TrendingTools tools={trendingTools} onOpenTool={setSelectedTool} />
 
-        <AdBanner text="Ad Space — Middle Banner" />
+        <section className="section">
+          <div className="section-header">
+            <h2>Recommended Partners</h2>
+            <p>Advertisement</p>
+          </div>
+          <AdUnit slot="1234567891" className="middle-ad" />
+        </section>
 
         <ToolsGrid
           tools={filteredTools}
@@ -66,6 +78,14 @@ function HomePage({
           selectedCategory={selectedCategory}
           searchTerm={searchTerm}
         />
+
+        <section className="section">
+          <div className="section-header">
+            <h2>More Sponsored Content</h2>
+            <p>Advertisement</p>
+          </div>
+          <AdUnit slot="1234567892" className="bottom-ad" />
+        </section>
       </div>
     </>
   );
@@ -85,15 +105,18 @@ function App() {
   );
 
   const filteredTools = useMemo(() => {
-    const search = searchTerm.toLowerCase();
+    const search = searchTerm.toLowerCase().trim();
 
     return tools.filter((t) => {
       const matchCategory =
         selectedCategory === "All" || t.category === selectedCategory;
 
       const matchSearch =
+        search === "" ||
         t.name.toLowerCase().includes(search) ||
-        t.description.toLowerCase().includes(search);
+        t.description.toLowerCase().includes(search) ||
+        t.category.toLowerCase().includes(search) ||
+        t.pricing.toLowerCase().includes(search);
 
       return matchCategory && matchSearch;
     });
